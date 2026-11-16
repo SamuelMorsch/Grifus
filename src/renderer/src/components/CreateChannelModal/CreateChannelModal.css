@@ -1,113 +1,112 @@
-
 .create-channel-modal {
-    position: relative;
-    width: 440px;
-    max-width: calc(100% - 32px);
-    padding: 32px;
-    background-color: #313338;
-    border-radius: 8px;
-    color: #f2f3f5;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+  width: 440px;
+  max-width: calc(100% - 32px);
+  padding: 32px;
+  background-color: #313338;
+  border-radius: 8px;
+  color: #f2f3f5;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 .create-channel-modal h2 {
-    text-align: center;
-    font-size: 24px;
-    margin: 0 0 10px;
+  text-align: center;
+  font-size: 24px;
+  margin: 0 0 10px;
 }
 
 .create-channel-modal p {
-    text-align: center;
-    color: #b5bac1;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 28px;
+  text-align: center;
+  color: #b5bac1;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 28px;
 }
 
 .create-channel-modal .modal-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: none;
-    border: none;
-    color: #b5bac1;
-    font-size: 28px;
-    cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #b5bac1;
+  font-size: 28px;
+  cursor: pointer;
 }
 
 .create-channel-modal .modal-close:hover {
-    color: white;
+  color: white;
 }
 
 .create-channel-modal form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .create-channel-modal label {
-    color: #b5bac1;
-    font-size: 12px;
-    font-weight: bold;
+  color: #b5bac1;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .channel-type-display {
-    padding: 12px;
-    background-color: #1e1f22;
-    border-radius: 4px;
-    color: #dbdee1;
-    font-size: 14px;
-    margin-bottom: 8px;
+  padding: 12px;
+  background-color: #1e1f22;
+  border-radius: 4px;
+  color: #dbdee1;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .create-channel-modal input {
-    padding: 12px;
-    background-color: #1e1f22;
-    border: 1px solid #1e1f22;
-    border-radius: 4px;
-    color: white;
-    font-size: 15px;
-    outline: none;
+  padding: 12px;
+  background-color: #1e1f22;
+  border: 1px solid #1e1f22;
+  border-radius: 4px;
+  color: white;
+  font-size: 15px;
+  outline: none;
 }
 
 .create-channel-modal input:focus {
-    border-color: #5865f2;
+  border-color: #5865f2;
 }
 
 .create-channel-modal .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .create-channel-modal .modal-actions button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .create-channel-modal .cancel-button {
-    background: transparent;
-    color: white;
+  background: transparent;
+  color: white;
 }
 
 .create-channel-modal .cancel-button:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .create-channel-modal .create-button {
-    background-color: #5865f2;
-    color: white;
+  background-color: #5865f2;
+  color: white;
 }
 
 .create-channel-modal .create-button:hover:not(:disabled) {
-    background-color: #4752c4;
+  background-color: #4752c4;
 }
 
 .create-channel-modal .create-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }

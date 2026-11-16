@@ -1,23 +1,23 @@
 .chat-area {
-    flex: 1;
-    height: 100vh;
-    background-color: #313338;
-    color: #f2f3f5;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+  flex: 1;
+  height: 100vh;
+  background-color: #313338;
+  color: #f2f3f5;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .chat-header {
-    height: 48px;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #3f4147;
+  height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #3f4147;
 }
 
 .chat-header h2 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
 }

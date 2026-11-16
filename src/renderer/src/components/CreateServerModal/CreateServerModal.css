@@ -1,114 +1,113 @@
-
 .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
 .create-server-modal {
-    position: relative;
-    width: 440px;
-    max-width: calc(100% - 32px);
-    padding: 32px;
-    background-color: #313338;
-    border-radius: 8px;
-    color: #f2f3f5;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+  width: 440px;
+  max-width: calc(100% - 32px);
+  padding: 32px;
+  background-color: #313338;
+  border-radius: 8px;
+  color: #f2f3f5;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 .create-server-modal h2 {
-    text-align: center;
-    font-size: 24px;
-    margin: 0 0 10px;
+  text-align: center;
+  font-size: 24px;
+  margin: 0 0 10px;
 }
 
 .create-server-modal p {
-    text-align: center;
-    color: #b5bac1;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 28px;
+  text-align: center;
+  color: #b5bac1;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 28px;
 }
 
 .modal-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: none;
-    border: none;
-    color: #b5bac1;
-    font-size: 28px;
-    cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #b5bac1;
+  font-size: 28px;
+  cursor: pointer;
 }
 
 .modal-close:hover {
-    color: white;
+  color: white;
 }
 
 .create-server-modal form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .create-server-modal label {
-    color: #b5bac1;
-    font-size: 12px;
-    font-weight: bold;
+  color: #b5bac1;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .create-server-modal input {
-    padding: 12px;
-    background-color: #1e1f22;
-    border: 1px solid #1e1f22;
-    border-radius: 4px;
-    color: white;
-    font-size: 15px;
-    outline: none;
+  padding: 12px;
+  background-color: #1e1f22;
+  border: 1px solid #1e1f22;
+  border-radius: 4px;
+  color: white;
+  font-size: 15px;
+  outline: none;
 }
 
 .create-server-modal input:focus {
-    border-color: #5865f2;
+  border-color: #5865f2;
 }
 
 .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .modal-actions button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .cancel-button {
-    background: transparent;
-    color: white;
+  background: transparent;
+  color: white;
 }
 
 .cancel-button:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .create-button {
-    background-color: #5865f2;
-    color: white;
+  background-color: #5865f2;
+  color: white;
 }
 
 .create-button:hover:not(:disabled) {
-    background-color: #4752c4;
+  background-color: #4752c4;
 }
 
 .create-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }

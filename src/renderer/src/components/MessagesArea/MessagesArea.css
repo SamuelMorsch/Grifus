@@ -1,22 +1,22 @@
 .messages-area {
-    flex: 1;
-    overflow-y: auto;
-    background-color: #313338;
-    margin: 15px;
-    min-height: 0
+  flex: 1;
+  overflow-y: auto;
+  background-color: #313338;
+  margin: 15px;
+  min-height: 0;
 }
 
 .mensagem-chat {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .mensagem-chat strong {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .mensagem-chat p {
-    background-color: #3e4046;
-    padding: 8px;
-    border-radius: 5px;
-    margin-top: 5px;
+  background-color: #3e4046;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 5px;
 }
