@@ -8,6 +8,7 @@
 
 .mensagem-chat {
   margin-bottom: 15px;
+  user-select: text;
 }
 
 .mensagem-chat strong {
