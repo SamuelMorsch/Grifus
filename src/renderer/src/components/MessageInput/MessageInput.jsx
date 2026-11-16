@@ -1,30 +1,32 @@
 import './MessageInput.css'
 import { useState } from 'react'
+import { useChatStore } from '../../store/useChatStore'
 
-function MessageInput({ enviarMensagem }) {
-  const [conteudo, setConteudo] = useState('')
+function MessageInput() {
+  const sendMessage = useChatStore((state) => state.sendMessage)
+  const [content, setContent] = useState('')
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  function handleSubmit(event) {
+    event.preventDefault()
 
-    if (!conteudo.trim()) return
+    if (!content.trim()) return
 
-    enviarMensagem(conteudo.trim())
-    setConteudo('')
+    sendMessage(content)
+    setContent('')
   }
 
-  function handleKeyDown(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      e.currentTarget.form.requestSubmit()
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault()
+      event.currentTarget.form.requestSubmit()
     }
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <textarea
-        value={conteudo}
-        onChange={(e) => setConteudo(e.target.value)}
+        value={content}
+        onChange={(event) => setContent(event.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Digite sua mensagem..."
         rows={1}

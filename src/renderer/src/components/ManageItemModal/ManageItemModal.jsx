@@ -2,36 +2,36 @@ import './ManageItemModal.css'
 import { useState } from 'react'
 
 function ManageItemModal({ item, onClose, onConfirm }) {
-  const [nome, setNome] = useState(item.nome)
+  const [name, setName] = useState(item.name)
 
-  const renomeando = item.acao === 'renomear'
-  const tipoNome = item.tipo === 'servidor' ? 'servidor' : 'canal'
+  const isRenaming = item.action === 'rename'
+  const targetLabel = item.target === 'server' ? 'servidor' : 'canal'
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  function handleSubmit(event) {
+    event.preventDefault()
 
-    if (renomeando && !nome.trim()) return
+    if (isRenaming && !name.trim()) return
 
-    onConfirm(renomeando ? nome.trim() : null)
+    onConfirm(isRenaming ? name.trim() : null)
   }
 
   return (
     <div className="manage-item-overlay" onClick={onClose}>
-      <div className="manage-item-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="manage-item-modal" onClick={(event) => event.stopPropagation()}>
         <button className="manage-item-close" onClick={onClose} type="button">
           ×
         </button>
 
-        <h2>{renomeando ? `Renomear ${tipoNome}` : `Excluir ${tipoNome}`}</h2>
+        <h2>{isRenaming ? `Renomear ${targetLabel}` : `Excluir ${targetLabel}`}</h2>
 
-        {renomeando ? (
+        {isRenaming ? (
           <form onSubmit={handleSubmit}>
             <label htmlFor="manage-item-name">NOVO NOME</label>
 
             <input
               id="manage-item-name"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
               maxLength={50}
               autoFocus
             />
@@ -41,7 +41,7 @@ function ManageItemModal({ item, onClose, onConfirm }) {
                 Cancelar
               </button>
 
-              <button type="submit" className="manage-confirm-button" disabled={!nome.trim()}>
+              <button type="submit" className="manage-confirm-button" disabled={!name.trim()}>
                 Salvar
               </button>
             </div>
@@ -49,7 +49,7 @@ function ManageItemModal({ item, onClose, onConfirm }) {
         ) : (
           <>
             <p>
-              Tem certeza de que deseja excluir <strong>{item.nome}</strong>? Essa ação não poderá
+              Tem certeza de que deseja excluir <strong>{item.name}</strong>? Essa ação não poderá
               ser desfeita.
             </p>
 
