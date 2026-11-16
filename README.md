@@ -1,34 +1,24 @@
-# communication-app
+# Grifus
 
-An Electron application with React
+Aplicativo desktop de comunicação inspirado no Discord, com servidores, canais de texto e voz,
+chat em tempo real e compartilhamento de tela em alta qualidade.
 
-## Recommended IDE Setup
+> Projeto em desenvolvimento. Nome provisório.
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+## Tecnologias
 
-## Project Setup
+Electron, React, Vite (electron-vite), JavaScript.
 
-### Install
-
-```bash
-$ npm install
-```
-
-### Development
+## Como rodar
 
 ```bash
-$ npm run dev
+npm install
+npm run dev
 ```
 
-### Build
+## Status
 
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
+- [x] Interface, servidores e canais
+- [x] Envio de mensagens (estado local)
+- [ ] Backend, contas e mensagens em tempo real
+- [ ] Voz e compartilhamento de tela
