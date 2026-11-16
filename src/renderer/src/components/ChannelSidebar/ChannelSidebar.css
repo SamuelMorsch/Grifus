@@ -1,0 +1,134 @@
+
+.channel-sidebar {
+    width: 240px;
+    height: 100vh;
+    background-color: #2b2d31;
+    color: #f2f3f5;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.server-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #3f4147;
+    padding-bottom: 15px;
+}
+
+.channel-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.channel-category {
+    font-size: 12px;
+    color: #949ba4;
+    font-weight: 700;
+    margin: 0;
+}
+
+.add-channel-button {
+    background: transparent;
+    border: none;
+    color: #949ba4;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+}
+
+.add-channel-button:hover {
+    color: #ffffff;
+}
+
+.channel-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.channel-item {
+    display: block;
+    font-size: 14px;
+    color: #b5bac1;
+    padding: 6px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    text-align: left;
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.channel-item:hover {
+    background-color: #383a40;
+    color: #ffffff;
+}
+
+.channel-item.selected {
+    background-color: #404249;
+    color: #ffffff;
+}
+
+.channel-options-button {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #b5bac1;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.channel-row:hover .channel-options-button {
+    display: block;
+}
+
+.channel-options-button:hover {
+    color: white;
+    background-color: #404249;
+}
+
+.channel-options-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 100;
+    width: 160px;
+    background-color: #111214;
+    padding: 5px;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.channel-options-menu button {
+    display: block;
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: #dbdee1;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.channel-options-menu button:hover {
+    background-color: #404249;
+}
+
+.channel-options-menu .channel-delete-option {
+    color: #f23f43;
+}
