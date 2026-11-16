@@ -1,38 +1,85 @@
 import './ChannelSidebar.css'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useChatStore } from '../../store/useChatStore'
 
-function ChannelSidebar({
-  servidorAtual,
-  canalSelecionado,
-  canalVozSelecionado,
-  setCanalSelecionado,
-  setCanalVozSelecionado,
-  criarCanal,
-  abrirGerenciamento
+function ChannelRow({
+  channel,
+  icon,
+  isSelected,
+  isMenuOpen,
+  canDelete,
+  onSelect,
+  onToggleMenu,
+  onManage
 }) {
-  const [menuAberto, setMenuAberto] = useState(null)
+  return (
+    <div className="channel-row">
+      <button className={isSelected ? 'channel-item selected' : 'channel-item'} onClick={onSelect}>
+        {icon} {channel.name}
+      </button>
 
-  function abrirOpcoes(canal, tipo) {
-    setMenuAberto(
-      menuAberto?.id === canal.id && menuAberto?.tipo === tipo ? null : { id: canal.id, tipo }
-    )
+      <button className="channel-options-button" onClick={onToggleMenu} title="Opções do canal">
+        ⋯
+      </button>
+
+      {isMenuOpen && (
+        <div className="channel-options-menu">
+          <button onClick={() => onManage('rename')}>Renomear canal</button>
+
+          {canDelete && (
+            <button className="channel-delete-option" onClick={() => onManage('delete')}>
+              Excluir canal
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ChannelSidebar({ onCreateChannel, onManage }) {
+  const servers = useChatStore((state) => state.servers)
+  const channels = useChatStore((state) => state.channels)
+  const selectedServerId = useChatStore((state) => state.selectedServerId)
+  const selectedTextChannelId = useChatStore((state) => state.selectedTextChannelId)
+  const selectedVoiceChannelId = useChatStore((state) => state.selectedVoiceChannelId)
+  const selectTextChannel = useChatStore((state) => state.selectTextChannel)
+  const selectVoiceChannel = useChatStore((state) => state.selectVoiceChannel)
+
+  const [openMenuId, setOpenMenuId] = useState(null)
+
+  const server = servers.find((item) => item.id === selectedServerId)
+
+  const textChannels = useMemo(
+    () =>
+      channels.filter(
+        (channel) => channel.serverId === selectedServerId && channel.type === 'text'
+      ),
+    [channels, selectedServerId]
+  )
+
+  const voiceChannels = useMemo(
+    () =>
+      channels.filter(
+        (channel) => channel.serverId === selectedServerId && channel.type === 'voice'
+      ),
+    [channels, selectedServerId]
+  )
+
+  function toggleMenu(channelId) {
+    setOpenMenuId((current) => (current === channelId ? null : channelId))
   }
 
-  function gerenciarCanal(canal, tipo, acao) {
-    abrirGerenciamento({
-      tipo: 'canal',
-      acao,
-      id: canal.id,
-      canalTipo: tipo,
-      nome: canal.nome
-    })
-
-    setMenuAberto(null)
+  function manage(channel, action) {
+    onManage({ target: 'channel', action, id: channel.id, name: channel.name })
+    setOpenMenuId(null)
   }
+
+  if (!server) return null
 
   return (
     <aside className="channel-sidebar">
-      <h2 className="server-name">{servidorAtual.nome}</h2>
+      <h2 className="server-name">{server.name}</h2>
 
       <section>
         <div className="channel-category-header">
@@ -40,50 +87,28 @@ function ChannelSidebar({
 
           <button
             className="add-channel-button"
-            onClick={() => criarCanal('texto')}
+            onClick={() => onCreateChannel('text')}
             title="Criar canal de texto"
           >
             +
           </button>
         </div>
 
-        {servidorAtual.canais.texto.map((canal) => (
-          <div className="channel-row" key={canal.id}>
-            <button
-              onClick={() => {
-                setCanalSelecionado(canal.id)
-                setMenuAberto(null)
-              }}
-              className={canalSelecionado === canal.id ? 'channel-item selected' : 'channel-item'}
-            >
-              # {canal.nome}
-            </button>
-
-            <button
-              className="channel-options-button"
-              onClick={() => abrirOpcoes(canal, 'texto')}
-              title="Opções do canal"
-            >
-              ⋯
-            </button>
-
-            {menuAberto?.id === canal.id && menuAberto?.tipo === 'texto' && (
-              <div className="channel-options-menu">
-                <button onClick={() => gerenciarCanal(canal, 'texto', 'renomear')}>
-                  Renomear canal
-                </button>
-
-                {servidorAtual.canais.texto.length > 1 && (
-                  <button
-                    className="channel-delete-option"
-                    onClick={() => gerenciarCanal(canal, 'texto', 'excluir')}
-                  >
-                    Excluir canal
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+        {textChannels.map((channel) => (
+          <ChannelRow
+            key={channel.id}
+            channel={channel}
+            icon="#"
+            isSelected={selectedTextChannelId === channel.id}
+            isMenuOpen={openMenuId === channel.id}
+            canDelete={textChannels.length > 1}
+            onSelect={() => {
+              selectTextChannel(channel.id)
+              setOpenMenuId(null)
+            }}
+            onToggleMenu={() => toggleMenu(channel.id)}
+            onManage={(action) => manage(channel, action)}
+          />
         ))}
       </section>
 
@@ -93,50 +118,28 @@ function ChannelSidebar({
 
           <button
             className="add-channel-button"
-            onClick={() => criarCanal('voz')}
+            onClick={() => onCreateChannel('voice')}
             title="Criar canal de voz"
           >
             +
           </button>
         </div>
 
-        {servidorAtual.canais.voz.map((canal) => (
-          <div className="channel-row" key={canal.id}>
-            <button
-              className={
-                canalVozSelecionado === canal.id ? 'channel-item selected' : 'channel-item'
-              }
-              onClick={() => {
-                setCanalVozSelecionado(canal.id)
-                setMenuAberto(null)
-              }}
-            >
-              🔊 {canal.nome}
-            </button>
-
-            <button
-              className="channel-options-button"
-              onClick={() => abrirOpcoes(canal, 'voz')}
-              title="Opções do canal"
-            >
-              ⋯
-            </button>
-
-            {menuAberto?.id === canal.id && menuAberto?.tipo === 'voz' && (
-              <div className="channel-options-menu">
-                <button onClick={() => gerenciarCanal(canal, 'voz', 'renomear')}>
-                  Renomear canal
-                </button>
-
-                <button
-                  className="channel-delete-option"
-                  onClick={() => gerenciarCanal(canal, 'voz', 'excluir')}
-                >
-                  Excluir canal
-                </button>
-              </div>
-            )}
-          </div>
+        {voiceChannels.map((channel) => (
+          <ChannelRow
+            key={channel.id}
+            channel={channel}
+            icon="🔊"
+            isSelected={selectedVoiceChannelId === channel.id}
+            isMenuOpen={openMenuId === channel.id}
+            canDelete={true}
+            onSelect={() => {
+              selectVoiceChannel(channel.id)
+              setOpenMenuId(null)
+            }}
+            onToggleMenu={() => toggleMenu(channel.id)}
+            onManage={(action) => manage(channel, action)}
+          />
         ))}
       </section>
     </aside>

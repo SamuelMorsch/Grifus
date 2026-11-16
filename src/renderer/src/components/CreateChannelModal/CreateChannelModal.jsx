@@ -1,22 +1,22 @@
 import './CreateChannelModal.css'
 import { useState } from 'react'
 
-function CreateChannelModal({ tipo, onClose, onCreate }) {
-  const [nome, setNome] = useState('')
+function CreateChannelModal({ type, onClose, onCreate }) {
+  const [name, setName] = useState('')
 
-  const canalDeTexto = tipo === 'texto'
+  const isTextChannel = type === 'text'
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  function handleSubmit(event) {
+    event.preventDefault()
 
-    if (!nome.trim()) return
+    if (!name.trim()) return
 
-    onCreate(nome.trim(), tipo)
+    onCreate(name.trim(), type)
   }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="create-channel-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="create-channel-modal" onClick={(event) => event.stopPropagation()}>
         <button className="modal-close" onClick={onClose} type="button">
           ×
         </button>
@@ -29,7 +29,7 @@ function CreateChannelModal({ tipo, onClose, onCreate }) {
           <label htmlFor="channel-name">TIPO DE CANAL</label>
 
           <div className="channel-type-display">
-            {canalDeTexto ? '# Canal de texto' : '🔊 Canal de voz'}
+            {isTextChannel ? '# Canal de texto' : '🔊 Canal de voz'}
           </div>
 
           <label htmlFor="channel-name">NOME DO CANAL</label>
@@ -37,9 +37,9 @@ function CreateChannelModal({ tipo, onClose, onCreate }) {
           <input
             id="channel-name"
             type="text"
-            placeholder={canalDeTexto ? 'novo-canal' : 'nova-sala'}
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
+            placeholder={isTextChannel ? 'novo-canal' : 'nova-sala'}
+            value={name}
+            onChange={(event) => setName(event.target.value)}
             maxLength={50}
             autoFocus
           />
@@ -49,7 +49,7 @@ function CreateChannelModal({ tipo, onClose, onCreate }) {
               Cancelar
             </button>
 
-            <button type="submit" className="create-button" disabled={!nome.trim()}>
+            <button type="submit" className="create-button" disabled={!name.trim()}>
               Criar canal
             </button>
           </div>

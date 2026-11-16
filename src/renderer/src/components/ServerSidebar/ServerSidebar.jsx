@@ -1,102 +1,76 @@
 import './ServerSidebar.css'
 import { useState } from 'react'
+import { useChatStore } from '../../store/useChatStore'
 
-function ServerSidebar({
-  servidores,
-  servidorSelecionado,
-  setServidorSelecionado,
-  criarServidor,
-  abrirGerenciamento
-}) {
-  const [menuServidor, setMenuServidor] = useState(null)
+function ServerSidebar({ onCreateServer, onManage }) {
+  const servers = useChatStore((state) => state.servers)
+  const selectedServerId = useChatStore((state) => state.selectedServerId)
+  const selectServer = useChatStore((state) => state.selectServer)
 
-  function abrirMenu(e, servidor) {
-    e.preventDefault()
+  const [contextMenu, setContextMenu] = useState(null)
 
-    setMenuServidor({
-      id: servidor.id,
-      x: e.clientX,
-      y: e.clientY
+  function openContextMenu(event, server) {
+    event.preventDefault()
+
+    setContextMenu({
+      serverId: server.id,
+      x: event.clientX,
+      y: event.clientY
     })
   }
 
-  const servidorDoMenu = servidores.find((servidor) => servidor.id === menuServidor?.id)
+  function manage(action, server) {
+    onManage({ target: 'server', action, id: server.id, name: server.name })
+    setContextMenu(null)
+  }
+
+  const menuServer = servers.find((server) => server.id === contextMenu?.serverId)
 
   return (
     <aside className="server-sidebar">
-      <div className="server-logo">d</div>
+      <div className="server-logo">G</div>
 
-      {servidores.map((servidor) => (
+      {servers.map((server) => (
         <button
-          key={servidor.id}
-          className={
-            servidorSelecionado === servidor.id ? 'server-button selected' : 'server-button'
-          }
+          key={server.id}
+          className={selectedServerId === server.id ? 'server-button selected' : 'server-button'}
           onClick={() => {
-            setServidorSelecionado(servidor.id)
-            setMenuServidor(null)
+            selectServer(server.id)
+            setContextMenu(null)
           }}
-          onContextMenu={(e) => abrirMenu(e, servidor)}
-          title={servidor.nome}
+          onContextMenu={(event) => openContextMenu(event, server)}
+          title={server.name}
         >
           <span
-            className={
-              servidorSelecionado === servidor.id ? 'button-barra selected' : 'button-barra'
-            }
+            className={selectedServerId === server.id ? 'button-barra selected' : 'button-barra'}
           />
 
-          {servidor.imagem ? (
-            <img className="server-image" src={servidor.imagem} alt={servidor.nome} />
+          {server.imageUrl ? (
+            <img className="server-image" src={server.imageUrl} alt={server.name} />
           ) : (
-            servidor.nome[0]
+            server.name[0]
           )}
         </button>
       ))}
 
       <button
         className="server-button add-server-button"
-        onClick={criarServidor}
+        onClick={onCreateServer}
         title="Criar servidor"
       >
         +
       </button>
 
-      {menuServidor && servidorDoMenu && (
+      {contextMenu && menuServer && (
         <div
           className="server-context-menu"
-          style={{
-            left: menuServidor.x,
-            top: menuServidor.y
-          }}
-          onMouseLeave={() => setMenuServidor(null)}
+          style={{ left: contextMenu.x, top: contextMenu.y }}
+          onMouseLeave={() => setContextMenu(null)}
         >
-          <button
-            onClick={() => {
-              abrirGerenciamento({
-                tipo: 'servidor',
-                acao: 'renomear',
-                id: servidorDoMenu.id,
-                nome: servidorDoMenu.nome
-              })
-              setMenuServidor(null)
-            }}
-          >
-            Renomear servidor
-          </button>
+          <button onClick={() => manage('rename', menuServer)}>Renomear servidor</button>
 
-          {servidores.length > 1 && (
-            <button
-              className="context-delete"
-              onClick={() => {
-                abrirGerenciamento({
-                  tipo: 'servidor',
-                  acao: 'excluir',
-                  id: servidorDoMenu.id,
-                  nome: servidorDoMenu.nome
-                })
-                setMenuServidor(null)
-              }}
-            >
+          {servers.length > 1 && (
+            <button className="context-delete" onClick={() => manage('delete', menuServer)}>
               Excluir servidor
             </button>
           )}
