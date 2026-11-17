@@ -1,13 +1,21 @@
 import './ManageItemModal.css'
 import { useState } from 'react'
+import type { FormEvent } from 'react'
+import type { ManagedItem } from '../../types/chat'
 
-function ManageItemModal({ item, onClose, onConfirm }) {
+interface ManageItemModalProps {
+  item: ManagedItem
+  onClose: () => void
+  onConfirm: (newName: string | null) => void
+}
+
+function ManageItemModal({ item, onClose, onConfirm }: ManageItemModalProps) {
   const [name, setName] = useState(item.name)
 
   const isRenaming = item.action === 'rename'
   const targetLabel = item.target === 'server' ? 'servidor' : 'canal'
 
-  function handleSubmit(event) {
+  function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
     if (isRenaming && !name.trim()) return

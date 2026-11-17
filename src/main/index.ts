@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-function isSafeExternalUrl(rawUrl) {
+function isSafeExternalUrl(rawUrl: string): boolean {
   try {
     const { protocol } = new URL(rawUrl)
     return protocol === 'https:' || protocol === 'http:'
@@ -12,7 +12,7 @@ function isSafeExternalUrl(rawUrl) {
   }
 }
 
-function createWindow() {
+function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
@@ -52,7 +52,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.drocsid.app')
+  electronApp.setAppUserModelId('com.grifus.app')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)

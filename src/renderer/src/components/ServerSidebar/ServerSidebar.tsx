@@ -1,15 +1,28 @@
 import './ServerSidebar.css'
 import { useState } from 'react'
+import type { MouseEvent } from 'react'
 import { useChatStore } from '../../store/useChatStore'
+import type { ManagedItem, Server } from '../../types/chat'
 
-function ServerSidebar({ onCreateServer, onManage }) {
+interface ServerSidebarProps {
+  onCreateServer: () => void
+  onManage: (item: ManagedItem) => void
+}
+
+interface ContextMenuState {
+  serverId: string
+  x: number
+  y: number
+}
+
+function ServerSidebar({ onCreateServer, onManage }: ServerSidebarProps) {
   const servers = useChatStore((state) => state.servers)
   const selectedServerId = useChatStore((state) => state.selectedServerId)
   const selectServer = useChatStore((state) => state.selectServer)
 
-  const [contextMenu, setContextMenu] = useState(null)
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
 
-  function openContextMenu(event, server) {
+  function openContextMenu(event: MouseEvent<HTMLButtonElement>, server: Server) {
     event.preventDefault()
 
     setContextMenu({
@@ -19,7 +32,7 @@ function ServerSidebar({ onCreateServer, onManage }) {
     })
   }
 
-  function manage(action, server) {
+  function manage(action: ManagedItem['action'], server: Server) {
     onManage({ target: 'server', action, id: server.id, name: server.name })
     setContextMenu(null)
   }

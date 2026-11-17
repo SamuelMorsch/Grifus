@@ -1,12 +1,13 @@
 import './MessageInput.css'
 import { useState } from 'react'
+import type { ChangeEvent, FormEvent, KeyboardEvent } from 'react'
 import { useChatStore } from '../../store/useChatStore'
 
 function MessageInput() {
   const sendMessage = useChatStore((state) => state.sendMessage)
   const [content, setContent] = useState('')
 
-  function handleSubmit(event) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     if (!content.trim()) return
@@ -15,10 +16,14 @@ function MessageInput() {
     setContent('')
   }
 
-  function handleKeyDown(event) {
+  function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setContent(event.target.value)
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
-      event.currentTarget.form.requestSubmit()
+      event.currentTarget.form?.requestSubmit()
     }
   }
 
@@ -26,7 +31,7 @@ function MessageInput() {
     <form onSubmit={handleSubmit}>
       <textarea
         value={content}
-        onChange={(event) => setContent(event.target.value)}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="Digite sua mensagem..."
         rows={1}

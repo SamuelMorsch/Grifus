@@ -1,6 +1,18 @@
 import './ChannelSidebar.css'
 import { useMemo, useState } from 'react'
 import { useChatStore } from '../../store/useChatStore'
+import type { Channel, ChannelType, ManagedItem } from '../../types/chat'
+
+interface ChannelRowProps {
+  channel: Channel
+  icon: string
+  isSelected: boolean
+  isMenuOpen: boolean
+  canDelete: boolean
+  onSelect: () => void
+  onToggleMenu: () => void
+  onManage: (action: ManagedItem['action']) => void
+}
 
 function ChannelRow({
   channel,
@@ -11,7 +23,7 @@ function ChannelRow({
   onSelect,
   onToggleMenu,
   onManage
-}) {
+}: ChannelRowProps) {
   return (
     <div className="channel-row">
       <button className={isSelected ? 'channel-item selected' : 'channel-item'} onClick={onSelect}>
@@ -37,7 +49,12 @@ function ChannelRow({
   )
 }
 
-function ChannelSidebar({ onCreateChannel, onManage }) {
+interface ChannelSidebarProps {
+  onCreateChannel: (type: ChannelType) => void
+  onManage: (item: ManagedItem) => void
+}
+
+function ChannelSidebar({ onCreateChannel, onManage }: ChannelSidebarProps) {
   const servers = useChatStore((state) => state.servers)
   const channels = useChatStore((state) => state.channels)
   const selectedServerId = useChatStore((state) => state.selectedServerId)
@@ -46,7 +63,7 @@ function ChannelSidebar({ onCreateChannel, onManage }) {
   const selectTextChannel = useChatStore((state) => state.selectTextChannel)
   const selectVoiceChannel = useChatStore((state) => state.selectVoiceChannel)
 
-  const [openMenuId, setOpenMenuId] = useState(null)
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
 
   const server = servers.find((item) => item.id === selectedServerId)
 
@@ -66,11 +83,11 @@ function ChannelSidebar({ onCreateChannel, onManage }) {
     [channels, selectedServerId]
   )
 
-  function toggleMenu(channelId) {
+  function toggleMenu(channelId: string) {
     setOpenMenuId((current) => (current === channelId ? null : channelId))
   }
 
-  function manage(channel, action) {
+  function manage(channel: Channel, action: ManagedItem['action']) {
     onManage({ target: 'channel', action, id: channel.id, name: channel.name })
     setOpenMenuId(null)
   }

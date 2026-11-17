@@ -2,7 +2,7 @@ import './MessagesArea.css'
 import { useEffect, useMemo, useRef } from 'react'
 import { useChatStore } from '../../store/useChatStore'
 
-function formatTime(isoDate) {
+function formatTime(isoDate: string): string {
   return new Date(isoDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 }
 
@@ -11,14 +11,17 @@ function MessagesArea() {
   const users = useChatStore((state) => state.users)
   const channelId = useChatStore((state) => state.selectedTextChannelId)
 
-  const endRef = useRef(null)
+  const endRef = useRef<HTMLDivElement>(null)
 
   const messages = useMemo(
     () => allMessages.filter((message) => message.channelId === channelId),
     [allMessages, channelId]
   )
 
-  const authorNames = useMemo(() => new Map(users.map((user) => [user.id, user.name])), [users])
+  const authorNames = useMemo(
+    () => new Map(users.map((user): [string, string] => [user.id, user.name])),
+    [users]
+  )
 
   // Sempre rola até a última mensagem ao trocar de canal ou receber uma nova.
   useEffect(() => {
