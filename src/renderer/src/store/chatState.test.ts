@@ -12,9 +12,26 @@ import {
   deleteChannel,
   sendMessage
 } from './chatState'
+import type { Channel, ChannelType, ChatState } from '../types/chat'
 
-function channelsOf(state, serverId, type) {
+function channelsOf(state: ChatState, serverId: string, type: ChannelType): Channel[] {
   return state.channels.filter((c) => c.serverId === serverId && c.type === type)
+}
+
+function byId<T extends { id: string }>(items: T[], id: string): T {
+  const item = items.find((candidate) => candidate.id === id)
+
+  if (!item) throw new Error(`Item não encontrado: ${id}`)
+
+  return item
+}
+
+function byName<T extends { name: string }>(items: T[], name: string): T {
+  const item = items.find((candidate) => candidate.name === name)
+
+  if (!item) throw new Error(`Item não encontrado: ${name}`)
+
+  return item
 }
 
 describe('selectServer', () => {
@@ -56,9 +73,8 @@ describe('selectTextChannel e selectVoiceChannel', () => {
 describe('createServer', () => {
   it('cria o servidor com os canais geral e voz e o seleciona', () => {
     const state = createServer(createInitialState(), '  Estudos  ')
-    const server = state.servers.find((s) => s.name === 'Estudos')
+    const server = byName(state.servers, 'Estudos')
 
-    expect(server).toBeTruthy()
     expect(state.selectedServerId).toBe(server.id)
 
     const [text] = channelsOf(state, server.id, 'text')
@@ -81,7 +97,7 @@ describe('renameServer', () => {
   it('renomeia o servidor', () => {
     const state = renameServer(createInitialState(), 'server-games', 'Jogos')
 
-    expect(state.servers.find((s) => s.id === 'server-games').name).toBe('Jogos')
+    expect(byId(state.servers, 'server-games').name).toBe('Jogos')
   })
 
   it('ignora nome vazio', () => {
@@ -128,7 +144,7 @@ describe('deleteServer', () => {
 describe('createChannel', () => {
   it('cria canal de texto no servidor selecionado e o seleciona', () => {
     const state = createChannel(createInitialState(), 'novidades', 'text')
-    const channel = state.channels.find((c) => c.name === 'novidades')
+    const channel = byName(state.channels, 'novidades')
 
     expect(channel.serverId).toBe('server-geral')
     expect(channel.type).toBe('text')
@@ -137,7 +153,7 @@ describe('createChannel', () => {
 
   it('cria canal de voz e seleciona apenas o canal de voz', () => {
     const state = createChannel(createInitialState(), 'sala-2', 'voice')
-    const channel = state.channels.find((c) => c.name === 'sala-2')
+    const channel = byName(state.channels, 'sala-2')
 
     expect(channel.type).toBe('voice')
     expect(state.selectedVoiceChannelId).toBe(channel.id)
@@ -148,7 +164,7 @@ describe('createChannel', () => {
     const initial = createInitialState()
 
     expect(createChannel(initial, ' ', 'text')).toBe(initial)
-    expect(createChannel(initial, 'x', 'video')).toBe(initial)
+    expect(createChannel(initial, 'x', 'video' as ChannelType)).toBe(initial)
   })
 })
 
@@ -156,7 +172,7 @@ describe('renameChannel', () => {
   it('renomeia o canal', () => {
     const state = renameChannel(createInitialState(), 'channel-geral-ajuda', 'suporte')
 
-    expect(state.channels.find((c) => c.id === 'channel-geral-ajuda').name).toBe('suporte')
+    expect(byId(state.channels, 'channel-geral-ajuda').name).toBe('suporte')
   })
 })
 
@@ -191,7 +207,7 @@ describe('deleteChannel', () => {
 describe('sendMessage', () => {
   it('adiciona a mensagem no canal selecionado, com autor e data', () => {
     const state = sendMessage(createInitialState(), '  olá  ')
-    const message = state.messages.at(-1)
+    const message = state.messages[state.messages.length - 1]
 
     expect(message.content).toBe('olá')
     expect(message.channelId).toBe('channel-geral-geral')

@@ -2,9 +2,11 @@
 // Cada função recebe o estado atual e devolve o próximo estado.
 // Se nada mudar, devolve o mesmo objeto de estado que recebeu.
 
-const newId = () => crypto.randomUUID()
+import type { Channel, ChannelType, ChatState, Message, Server } from '../types/chat'
 
-export function createInitialState() {
+const newId = (): string => crypto.randomUUID()
+
+export function createInitialState(): ChatState {
   return {
     currentUserId: 'user-samuel',
     users: [
@@ -52,11 +54,18 @@ export function createInitialState() {
   }
 }
 
-function firstChannelOfType(channels, serverId, type) {
+function firstChannelOfType(
+  channels: Channel[],
+  serverId: string,
+  type: ChannelType
+): Channel | null {
   return channels.find((channel) => channel.serverId === serverId && channel.type === type) ?? null
 }
 
-function selectionForServer(channels, serverId) {
+function selectionForServer(
+  channels: Channel[],
+  serverId: string
+): Pick<ChatState, 'selectedServerId' | 'selectedTextChannelId' | 'selectedVoiceChannelId'> {
   return {
     selectedServerId: serverId,
     selectedTextChannelId: firstChannelOfType(channels, serverId, 'text')?.id ?? null,
@@ -64,13 +73,13 @@ function selectionForServer(channels, serverId) {
   }
 }
 
-export function selectServer(state, serverId) {
+export function selectServer(state: ChatState, serverId: string): ChatState {
   if (!state.servers.some((server) => server.id === serverId)) return state
 
   return { ...state, ...selectionForServer(state.channels, serverId) }
 }
 
-export function selectTextChannel(state, channelId) {
+export function selectTextChannel(state: ChatState, channelId: string): ChatState {
   const channel = state.channels.find((item) => item.id === channelId)
 
   if (!channel || channel.type !== 'text') return state
@@ -78,7 +87,7 @@ export function selectTextChannel(state, channelId) {
   return { ...state, selectedTextChannelId: channelId }
 }
 
-export function selectVoiceChannel(state, channelId) {
+export function selectVoiceChannel(state: ChatState, channelId: string): ChatState {
   const channel = state.channels.find((item) => item.id === channelId)
 
   if (!channel || channel.type !== 'voice') return state
@@ -86,14 +95,14 @@ export function selectVoiceChannel(state, channelId) {
   return { ...state, selectedVoiceChannelId: channelId }
 }
 
-export function createServer(state, name) {
+export function createServer(state: ChatState, name: string): ChatState {
   const trimmedName = name.trim()
 
   if (!trimmedName) return state
 
-  const server = { id: newId(), name: trimmedName, imageUrl: null }
+  const server: Server = { id: newId(), name: trimmedName, imageUrl: null }
 
-  const channels = [
+  const channels: Channel[] = [
     ...state.channels,
     { id: newId(), serverId: server.id, name: 'geral', type: 'text' },
     { id: newId(), serverId: server.id, name: 'voz', type: 'voice' }
@@ -107,7 +116,7 @@ export function createServer(state, name) {
   }
 }
 
-export function renameServer(state, serverId, name) {
+export function renameServer(state: ChatState, serverId: string, name: string): ChatState {
   const trimmedName = name.trim()
 
   if (!trimmedName) return state
@@ -120,7 +129,7 @@ export function renameServer(state, serverId, name) {
   }
 }
 
-export function deleteServer(state, serverId) {
+export function deleteServer(state: ChatState, serverId: string): ChatState {
   // Nunca permite ficar sem servidores.
   if (state.servers.length <= 1) return state
   if (!state.servers.some((server) => server.id === serverId)) return state
@@ -139,14 +148,14 @@ export function deleteServer(state, serverId) {
   return { ...next, ...selectionForServer(channels, servers[0].id) }
 }
 
-export function createChannel(state, name, type) {
+export function createChannel(state: ChatState, name: string, type: ChannelType): ChatState {
   const trimmedName = name.trim()
 
   if (!trimmedName) return state
   if (type !== 'text' && type !== 'voice') return state
   if (!state.servers.some((server) => server.id === state.selectedServerId)) return state
 
-  const channel = {
+  const channel: Channel = {
     id: newId(),
     serverId: state.selectedServerId,
     name: trimmedName,
@@ -160,7 +169,7 @@ export function createChannel(state, name, type) {
     : { ...next, selectedVoiceChannelId: channel.id }
 }
 
-export function renameChannel(state, channelId, name) {
+export function renameChannel(state: ChatState, channelId: string, name: string): ChatState {
   const trimmedName = name.trim()
 
   if (!trimmedName) return state
@@ -173,7 +182,7 @@ export function renameChannel(state, channelId, name) {
   }
 }
 
-export function deleteChannel(state, channelId) {
+export function deleteChannel(state: ChatState, channelId: string): ChatState {
   const channel = state.channels.find((item) => item.id === channelId)
 
   if (!channel) return state
@@ -208,12 +217,12 @@ export function deleteChannel(state, channelId) {
   return next
 }
 
-export function sendMessage(state, content) {
+export function sendMessage(state: ChatState, content: string): ChatState {
   const trimmedContent = content.trim()
 
   if (!trimmedContent || !state.selectedTextChannelId) return state
 
-  const message = {
+  const message: Message = {
     id: newId(),
     channelId: state.selectedTextChannelId,
     authorId: state.currentUserId,

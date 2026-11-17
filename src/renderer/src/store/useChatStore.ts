@@ -1,8 +1,27 @@
 import { create } from 'zustand'
 import * as chat from './chatState'
+import type { ChannelType, ChatState } from '../types/chat'
 
-// Cada ação aplica uma função pura de chatState.js ao estado atual.
-export const useChatStore = create((set) => ({
+interface ChatActions {
+  selectServer: (serverId: string) => void
+  selectTextChannel: (channelId: string) => void
+  selectVoiceChannel: (channelId: string) => void
+
+  createServer: (name: string) => void
+  renameServer: (serverId: string, name: string) => void
+  deleteServer: (serverId: string) => void
+
+  createChannel: (name: string, type: ChannelType) => void
+  renameChannel: (channelId: string, name: string) => void
+  deleteChannel: (channelId: string) => void
+
+  sendMessage: (content: string) => void
+}
+
+export type ChatStore = ChatState & ChatActions
+
+// Cada ação aplica uma função pura de chatState.ts ao estado atual.
+export const useChatStore = create<ChatStore>()((set) => ({
   ...chat.createInitialState(),
 
   selectServer: (serverId) => set((state) => chat.selectServer(state, serverId)),

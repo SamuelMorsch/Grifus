@@ -6,6 +6,7 @@ import CreateServerModal from './components/CreateServerModal/CreateServerModal'
 import CreateChannelModal from './components/CreateChannelModal/CreateChannelModal'
 import ManageItemModal from './components/ManageItemModal/ManageItemModal'
 import { useChatStore } from './store/useChatStore'
+import type { ChannelType, ManagedItem } from './types/chat'
 
 function App() {
   const createServer = useChatStore((state) => state.createServer)
@@ -17,32 +18,32 @@ function App() {
 
   // Estado só da interface: quais modais estão abertos.
   const [isCreateServerOpen, setIsCreateServerOpen] = useState(false)
-  const [createChannelType, setCreateChannelType] = useState(null)
-  const [managedItem, setManagedItem] = useState(null)
+  const [createChannelType, setCreateChannelType] = useState<ChannelType | null>(null)
+  const [managedItem, setManagedItem] = useState<ManagedItem | null>(null)
 
-  function handleCreateServer(name) {
+  function handleCreateServer(name: string) {
     createServer(name)
     setIsCreateServerOpen(false)
   }
 
-  function handleCreateChannel(name, type) {
+  function handleCreateChannel(name: string, type: ChannelType) {
     createChannel(name, type)
     setCreateChannelType(null)
   }
 
-  function handleConfirmManage(newName) {
+  function handleConfirmManage(newName: string | null) {
     if (!managedItem) return
 
     const { target, action, id } = managedItem
 
-    if (target === 'server') {
-      if (action === 'rename') renameServer(id, newName)
-      if (action === 'delete') deleteServer(id)
+    if (action === 'rename' && newName !== null) {
+      if (target === 'server') renameServer(id, newName)
+      else renameChannel(id, newName)
     }
 
-    if (target === 'channel') {
-      if (action === 'rename') renameChannel(id, newName)
-      if (action === 'delete') deleteChannel(id)
+    if (action === 'delete') {
+      if (target === 'server') deleteServer(id)
+      else deleteChannel(id)
     }
 
     setManagedItem(null)
